@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз погоды</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            transition: background 1s ease-in-out;
+            background-image: url('https://example.com/background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .city {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .current-weather {
+            font-size: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .temperature {
+            margin-right: 10px;
+        }
+
+        .weather-icon {
+            font-size: 180px;
+        }
+
+        .weather-icon img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .forecast {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        .daily-forecast, .weekly-forecast {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .forecast-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 5px;
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 5px;
+        }
+
+        .temp {
+            font-size: 30px;
+        }
+
+        .day-name {
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: 400;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 70%;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="get">
+            <div class="input-container">
+                <input type="text" name="city" placeholder="Введите название города" required />
+                <button type="submit">Получить погоду</button>
+            </div>
+        </form>
+        <h1 class="city" id="cityName">{{ weather_data.city }}</h1>
+        <div class="current-weather" id="currentWeather">
+            <div class="temperature" id="temperature">{{ weather_data.time.0.temperature }}°</div>
+            <div class="weather-icon" id="weatherIcon"><img src="https://openweathermap.org/img/wn/{{ weather_data.time.0.icon }}@2x.png"></div>
+        </div>
+        <div class="forecast" id="forecast">
+            <h2>Прогноз на сутки</h2>
+            <div class="daily-forecast" id="dailyForecast">
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.time.1.time }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.time.1.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.time.1.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.time.2.time }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.time.2.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.time.2.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.time.3.time }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.time.3.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.time.3.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.time.4.time }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.time.4.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.time.4.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.time.5.time }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.time.5.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.time.5.temperature }}°</div>
+                </div>
+            </div>
+            <h2>Прогноз на 5 дней</h2>
+            <div class="weekly-forecast" id="weeklyForecast">
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.average_temperatures.0.date }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.average_temperatures.0.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.average_temperatures.0.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.average_temperatures.1.date}}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.average_temperatures.1.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.average_temperatures.1.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.average_temperatures.2.date }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.average_temperatures.2.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.average_temperatures.2.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.average_temperatures.3.date }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.average_temperatures.3.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.average_temperatures.3.temperature }}°</div>
+                </div>
+                <div class="forecast-item">
+                    <div class="day-name">{{ weather_data.average_temperatures.4.date }}</div>
+                    <div class="icon"><img src="https://openweathermap.org/img/wn/{{ weather_data.average_temperatures.4.icon }}@2x.png"></div>
+                    <div class="temp">{{ weather_data.average_temperatures.4.temperature }}°</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
